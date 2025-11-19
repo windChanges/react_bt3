@@ -2,7 +2,41 @@ import React, { useState } from "react";
 
 const CartShoe = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { cartItemsProp } = props;
+  const { cartItemsProp,onUpdateQtyCartsProp,onDeleteItemCartProp } = props;
+
+  // render list Product in Cart
+  const renderListProduct = () => {
+    return cartItemsProp.map((shoe) => {
+      return (
+        <tr className="border-b text-center" key={shoe.maSP}>
+          <td className="w-[100px] h-[100px]">
+            <img src={shoe.hinhSP} alt={shoe.tenSP} />
+          </td>
+          <td className="text-xl">{shoe.tenSP}</td>
+          <td className="text-center">
+            <button onClick={() => onUpdateQtyCartsProp(shoe.maSP, false)} className="mr-2 text-2xl">
+              -
+            </button>
+            {shoe.soLuong}
+            <button onClick={() => onUpdateQtyCartsProp(shoe.maSP, true)} className="ml-2 text-xl">
+              +
+            </button>
+          </td>
+          <td>{shoe.thanhTien}</td>
+          <td>
+            <button
+              onClick={()=> onDeleteItemCartProp(shoe.maSP)}
+              type="button"
+              className="text-black bg-red-500 box-border border border-transparent hover:bg-red-700 focus:ring-2 focus:ring-black font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none"
+            >
+              Xóa
+            </button>
+          </td>
+        </tr>
+      );
+    });
+  };
+
   // Component con hiển thị modal
   const CartModal = ({ onClose }) => {
     return (
@@ -14,10 +48,12 @@ const CartShoe = (props) => {
           >
             ✖
           </button>
-          <h2 className="text-2xl font-semibold mb-4 text-center">🛒 Giỏ hàng</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-center">
+            🛒 Giỏ hàng
+          </h2>
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr>
+              <tr className="text-center">
                 <th className="border-b p-2">Hình Ảnh</th>
                 <th className="border-b p-2">Tên Sản Phẩm</th>
                 <th className="border-b p-2">Số Lượng</th>
@@ -25,12 +61,23 @@ const CartShoe = (props) => {
                 <th className="border-b p-2">Hành động</th>
               </tr>
             </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="w-[100px] h-[100px]"> <img src="http://svcy3.myclass.vn/images/adidas-prophere.png" alt="" /></td>
-              </tr>
-            </tbody>
+            <tbody>{renderListProduct()}</tbody>
           </table>
+          <div className="flex justify-between items-center">
+            <button
+              onClick={onClose}
+              type="button"
+              className="bg-amber-300 rounded-full py-2 px-4 mt-3 hover:bg-amber-500"
+            >
+              Đóng
+            </button>
+            <button
+              type="button"
+              className="bg-green-300 rounded-full py-2 px-4 mt-3 hover:bg-green-500"
+            >
+              Thanh Toán
+            </button>
+          </div>
         </div>
       </div>
     );
